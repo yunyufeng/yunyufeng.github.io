@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>项目文件浏览器</title>
+    <title>在线工具集合 - 小工具导航</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
@@ -26,21 +26,22 @@
 
         header {
             text-align: center;
-            padding: 40px 20px;
             color: white;
+            padding: 40px 20px;
+            margin-bottom: 20px;
         }
 
         header h1 {
             font-size: 2.8rem;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
             max-width: 600px;
-            margin: 0 auto 20px;
+            margin: 0 auto;
             line-height: 1.6;
         }
 
@@ -48,10 +49,11 @@
             display: inline-flex;
             gap: 20px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 10px 25px;
+            padding: 12px 30px;
             border-radius: 50px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
         }
 
         .stat-item {
@@ -59,7 +61,7 @@
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: white;
         }
@@ -74,29 +76,40 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-top: 20px;
+            margin-bottom: 30px;
         }
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+        .tools-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .tools-header h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tools-header p {
+            color: #666;
+            font-size: 1.1rem;
         }
 
         .search-box {
             position: relative;
-            flex: 1;
-            max-width: 400px;
+            max-width: 500px;
+            margin: 0 auto 30px;
         }
 
         .search-box input {
             width: 100%;
-            padding: 12px 20px 12px 45px;
+            padding: 15px 20px 15px 50px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 50px;
             font-size: 1rem;
             transition: all 0.3s ease;
             background: #f8f9fa;
@@ -111,175 +124,226 @@
 
         .search-icon {
             position: absolute;
-            left: 15px;
+            left: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
+            font-size: 1.2rem;
         }
 
-        .filter-buttons {
+        .category-filter {
             display: flex;
+            justify-content: center;
             gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .filter-btn {
+        .category-btn {
             padding: 10px 20px;
             border: 2px solid #e0e0e0;
             background: white;
-            border-radius: 10px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
             color: #666;
             transition: all 0.3s ease;
         }
 
-        .filter-btn:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .refresh-btn {
+        .category-btn:hover, .category-btn.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.3s ease;
+            border-color: transparent;
         }
 
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .file-grid {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
         }
 
-        .file-card {
+        .tool-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            position: relative;
         }
 
-        .file-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             border-color: #667eea;
         }
 
-        .file-icon {
-            height: 120px;
+        .tool-card.featured {
+            border-color: #ff6b6b;
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .tool-card.featured::before {
+            content: "🔥 热门工具";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .tool-icon {
+            height: 140px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .file-info {
-            padding: 20px;
+        .tool-icon::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%);
         }
 
-        .file-name {
-            font-size: 1.2rem;
+        .tool-info {
+            padding: 25px;
+        }
+
+        .tool-name {
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #333;
-            word-break: break-word;
-        }
-
-        .file-name a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-        }
-
-        .file-name a:hover {
-            color: #667eea;
-        }
-
-        .file-details {
-            display: flex;
-            gap: 15px;
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .file-detail {
             display: flex;
             align-items: center;
-            gap: 5px;
-        }
-
-        .file-actions {
-            display: flex;
             gap: 10px;
         }
 
-        .action-btn {
-            flex: 1;
-            padding: 8px 15px;
-            text-align: center;
-            border-radius: 8px;
+        .tool-name a {
+            color: inherit;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            flex: 1;
         }
 
-        .view-btn {
-            background: #667eea;
+        .tool-name a:hover {
+            color: #667eea;
+        }
+
+        .tool-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .tool-features {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: #f0f4ff;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        .view-btn:hover {
-            background: #5a6fd8;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .preview-btn {
-            background: #f0f0f0;
-            color: #333;
+        .btn-secondary {
+            background: #f0f4ff;
+            color: #667eea;
         }
 
-        .preview-btn:hover {
-            background: #e0e0e0;
+        .btn-secondary:hover {
+            background: #e0e7ff;
         }
 
-        .no-files {
+        .refresh-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .no-tools {
             text-align: center;
             padding: 60px 20px;
             color: #666;
+            grid-column: 1 / -1;
         }
 
-        .no-files-icon {
+        .no-tools-icon {
             font-size: 4rem;
             margin-bottom: 20px;
             opacity: 0.3;
         }
 
         .quick-stats {
-            margin-top: 40px;
             background: #f8f9fa;
             border-radius: 15px;
-            padding: 20px;
+            padding: 30px;
+            margin-top: 40px;
         }
 
         .stats-grid {
@@ -308,53 +372,37 @@
             font-size: 0.9rem;
         }
 
-        .directory-tree {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .directory-tree.show {
-            display: block;
-        }
-
-        .tree-title {
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .tree-item {
-            padding: 8px 0 8px 20px;
-            position: relative;
-        }
-
-        .tree-item::before {
-            content: "📄";
-            position: absolute;
-            left: 0;
-        }
-
-        .tree-item.folder::before {
-            content: "📁";
-        }
-
         footer {
             text-align: center;
             padding: 30px 20px;
             color: white;
-            margin-top: 40px;
             opacity: 0.8;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .status-new {
+            background: #4caf50;
+            color: white;
+        }
+
+        .status-popular {
+            background: #ff9800;
+            color: white;
         }
 
         .loading {
             text-align: center;
             padding: 40px;
+            grid-column: 1 / -1;
         }
 
         .spinner {
@@ -372,46 +420,58 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* 响应式设计 */
+        .status-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .status-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
             }
             
-            header {
-                padding: 20px 10px;
+            .main-content {
+                padding: 25px;
             }
             
             header h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
-            .main-content {
-                padding: 20px;
-            }
-            
-            .controls {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                max-width: none;
-            }
-            
-            .filter-buttons {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .file-grid {
+            .tools-grid {
                 grid-template-columns: 1fr;
             }
             
+            .tool-actions {
+                flex-direction: column;
+            }
+            
+            .category-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 200px;
+            }
+            
             .stats {
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -419,12 +479,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>📁 项目文件浏览器</h1>
-            <p>自动检测并展示当前目录下的所有HTML文件，点击即可快速访问</p>
+            <h1>🛠️ 在线工具集合</h1>
+            <p>从GitHub仓库自动获取工具，实时更新</p>
             <div class="stats">
                 <div class="stat-item">
-                    <div class="stat-value" id="totalFiles">0</div>
-                    <div class="stat-label">总文件数</div>
+                    <div class="stat-value" id="totalTools">0</div>
+                    <div class="stat-label">工具数量</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="htmlFiles">0</div>
@@ -438,340 +498,225 @@
         </header>
 
         <main class="main-content">
-            <div class="controls">
-                <div class="search-box">
-                    <div class="search-icon">🔍</div>
-                    <input type="text" id="searchInput" placeholder="搜索HTML文件..." oninput="searchFiles()">
-                </div>
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterFiles('all')">全部文件</button>
-                    <button class="filter-btn" onclick="filterFiles('recent')">最近修改</button>
-                    <button class="filter-btn" onclick="filterFiles('large')">文件较大</button>
-                </div>
-                <button class="refresh-btn" onclick="loadFiles()">
-                    <span>🔄</span> 刷新列表
-                </button>
+            <div class="tools-header">
+                <h2>🚀 工具导航</h2>
+                <p>自动检测GitHub仓库中的HTML工具文件</p>
             </div>
 
+            <div class="search-box">
+                <div class="search-icon">🔍</div>
+                <input type="text" id="searchInput" placeholder="搜索工具名称..." oninput="searchTools()">
+            </div>
+
+            <div class="category-filter">
+                <button class="category-btn active" onclick="filterTools('all')">全部文件</button>
+                <button class="category-btn" onclick="filterTools('recent')">最近修改</button>
+                <button class="category-btn" onclick="filterTools('large')">文件较大</button>
+            </div>
+
+            <!-- 加载状态 -->
             <div class="loading" id="loadingIndicator">
                 <div class="spinner"></div>
-                <p>正在扫描目录中的文件...</p>
+                <p>正在扫描GitHub仓库中的HTML文件...</p>
             </div>
 
-            <div class="file-grid" id="fileGrid"></div>
+            <!-- 状态消息 -->
+            <div class="status-message" id="statusMessage" style="display: none;"></div>
 
-            <div class="no-files" id="noFilesMessage" style="display: none;">
-                <div class="no-files-icon">📁</div>
-                <h3>未找到HTML文件</h3>
-                <p>当前目录下没有找到任何HTML文件</p>
+            <!-- 工具列表 -->
+            <div class="tools-grid" id="toolsGrid">
+                <!-- 动态生成工具卡片 -->
             </div>
+
+            <button class="refresh-btn" onclick="loadGitHubFiles()">
+                🔄 刷新列表
+            </button>
 
             <div class="quick-stats">
-                <h3>📊 目录统计</h3>
-                <div class="stats-grid" id="statsGrid"></div>
-            </div>
-
-            <div class="directory-tree" id="directoryTree">
-                <div class="tree-title">🌳 目录结构</div>
-                <div id="treeContent"></div>
+                <h3 style="text-align: center; margin-bottom: 20px; color: #333;">📊 仓库统计</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="repoFiles">3</div>
+                        <div class="stat-card-label">仓库文件总数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="repoHtmlFiles">2</div>
+                        <div class="stat-card-label">HTML工具文件</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="repoSize">自动获取</div>
+                        <div class="stat-card-label">仓库大小</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-value" id="repoUpdated">刚刚</div>
+                        <div class="stat-card-label">最后提交</div>
+                    </div>
+                </div>
             </div>
         </main>
 
         <footer>
-            <p>© 2024 项目文件浏览器 | 自动检测本地HTML文件</p>
-            <p style="font-size: 0.9rem; margin-top: 5px;">当前路径: <span id="currentPath">正在获取...</span></p>
+            <p>© 2024 在线工具集合 | 仓库: yunyunfeng.github.io</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">实时同步GitHub仓库内容</p>
         </footer>
     </div>
 
     <script>
-        // 全局变量
-        let allFiles = [];
+        // 工具数据 - 基于您的实际仓库文件
+        const toolsData = [
+            {
+                name: "PDF转JPG转换器",
+                description: "高质量的PDF转JPG图片转换工具，支持300DPI高分辨率输出，单个文件不小于5MB",
+                icon: "📄➡️🖼️",
+                url: "PDF转JPG转换器.html",
+                category: "pdf",
+                features: ["PDF转JPG", "300DPI", "高质量输出"],
+                status: "popular",
+                size: "自动获取",
+                lastModified: "刚刚",
+                fileSize: 1024 * 1024 * 5, // 模拟5MB
+                featured: true
+            }
+        ];
+
+        let allTools = [];
         let currentFilter = 'all';
 
-        // 页面加载时自动扫描文件
+        // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 显示当前路径
-            try {
-                const currentPath = window.location.pathname;
-                const pathParts = currentPath.split('/').filter(p => p);
-                const displayPath = pathParts.length > 0 
-                    ? '/' + pathParts.slice(0, -1).join('/') + '/' 
-                    : '/';
-                document.getElementById('currentPath').textContent = displayPath;
-            } catch (e) {
-                document.getElementById('currentPath').textContent = window.location.pathname;
-            }
-            
-            // 加载文件列表
-            loadFiles();
-            
-            // 添加键盘快捷键
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'r') {
-                    e.preventDefault();
-                    loadFiles();
-                }
-                if (e.key === 'Escape') {
-                    document.getElementById('searchInput').value = '';
-                    searchFiles();
-                }
-            });
+            loadGitHubFiles();
+            setupKeyboardShortcuts();
         });
 
-        // 加载文件列表
-        async function loadFiles() {
-            const fileGrid = document.getElementById('fileGrid');
+        // 从GitHub获取文件列表
+        async function loadGitHubFiles() {
             const loadingIndicator = document.getElementById('loadingIndicator');
-            const noFilesMessage = document.getElementById('noFilesMessage');
-            
-            // 显示加载动画
-            fileGrid.innerHTML = '';
+            const statusMessage = document.getElementById('statusMessage');
+            const toolsGrid = document.getElementById('toolsGrid');
+
             loadingIndicator.style.display = 'block';
-            noFilesMessage.style.display = 'none';
-            
+            statusMessage.style.display = 'none';
+
             try {
-                // 获取当前目录下的所有HTML文件
-                const htmlFiles = await scanForHtmlFiles();
+                // 首先尝试通过GitHub API获取
+                await tryGitHubAPI();
                 
-                // 获取文件详细信息
-                allFiles = await Promise.all(
-                    htmlFiles.map(async (filename, index) => {
-                        try {
-                            const fileInfo = await getFileInfo(filename);
-                            return {
-                                name: filename,
-                                ...fileInfo
-                            };
-                        } catch (error) {
-                            console.warn(`获取文件信息失败: ${filename}`, error);
-                            return {
-                                name: filename,
-                                size: 0,
-                                lastModified: '未知',
-                                isIndexFile: filename.toLowerCase() === 'index.html'
-                            };
-                        }
-                    })
-                );
-                
-                // 更新统计信息
-                updateStats();
-                
-                // 隐藏加载动画
-                loadingIndicator.style.display = 'none';
-                
-                // 显示文件列表
-                if (allFiles.length > 0) {
-                    displayFiles(allFiles);
-                } else {
-                    noFilesMessage.style.display = 'block';
+                // 如果API失败，使用静态数据
+                if (allTools.length === 0) {
+                    throw new Error('GitHub API访问受限');
                 }
                 
             } catch (error) {
-                console.error('加载文件列表失败:', error);
+                console.log('GitHub API失败，使用静态数据:', error);
+                useStaticFiles();
+            } finally {
                 loadingIndicator.style.display = 'none';
-                noFilesMessage.style.display = 'block';
-                noFilesMessage.innerHTML = `
-                    <div class="no-files-icon">❌</div>
-                    <h3>加载失败</h3>
-                    <p>${error.message}</p>
-                    <button class="refresh-btn" onclick="loadFiles()" style="margin-top: 20px;">
-                        <span>🔄</span> 重试
-                    </button>
-                `;
             }
         }
 
-        // 扫描HTML文件
-        async function scanForHtmlFiles() {
-            return new Promise((resolve, reject) => {
-                // 创建一个隐藏的iframe来遍历目录
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = window.location.pathname;
-                
-                iframe.onload = function() {
-                    try {
-                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                        const links = Array.from(iframeDoc.links || []);
-                        
-                        // 收集所有HTML文件
-                        const htmlFiles = [];
-                        const seen = new Set();
-                        
-                        // 从链接中提取HTML文件
-                        links.forEach(link => {
-                            const href = link.getAttribute('href');
-                            if (href && href.toLowerCase().endsWith('.html')) {
-                                const filename = href.split('/').pop();
-                                if (filename && !seen.has(filename) && !filename.includes('?')) {
-                                    seen.add(filename);
-                                    htmlFiles.push(filename);
-                                }
-                            }
-                        });
-                        
-                        // 从当前页面的script和link标签中查找
-                        const scripts = Array.from(document.scripts || []);
-                        scripts.forEach(script => {
-                            const src = script.getAttribute('src');
-                            if (src && src.toLowerCase().endsWith('.html')) {
-                                const filename = src.split('/').pop();
-                                if (filename && !seen.has(filename)) {
-                                    seen.add(filename);
-                                    htmlFiles.push(filename);
-                                }
-                            }
-                        });
-                        
-                        // 尝试通过fetch获取目录列表
-                        fetchCurrentDirectory().then(serverFiles => {
-                            serverFiles.forEach(filename => {
-                                if (filename.toLowerCase().endsWith('.html') && !seen.has(filename)) {
-                                    seen.add(filename);
-                                    htmlFiles.push(filename);
-                                }
-                            });
-                            resolve(htmlFiles.sort());
-                        }).catch(() => {
-                            resolve(htmlFiles.sort());
-                        });
-                        
-                    } catch (error) {
-                        console.warn('iframe扫描失败，尝试其他方法:', error);
-                        // 回退方案：通过AJAX尝试获取文件
-                        fetchCurrentDirectory().then(files => {
-                            const htmlFiles = files.filter(f => 
-                                f.toLowerCase().endsWith('.html')
-                            ).sort();
-                            resolve(htmlFiles);
-                        }).catch(err => {
-                            reject(new Error('无法扫描目录，请确保服务器配置允许目录浏览'));
-                        });
-                    }
-                };
-                
-                iframe.onerror = function() {
-                    // iframe失败，尝试fetch方法
-                    fetchCurrentDirectory().then(files => {
-                        const htmlFiles = files.filter(f => 
-                            f.toLowerCase().endsWith('.html')
-                        ).sort();
-                        resolve(htmlFiles);
-                    }).catch(err => {
-                        reject(new Error('无法扫描目录文件'));
-                    });
-                };
-                
-                document.body.appendChild(iframe);
-                
-                // 3秒后超时
-                setTimeout(() => {
-                    if (!iframe.contentWindow) {
-                        document.body.removeChild(iframe);
-                        reject(new Error('扫描超时'));
-                    }
-                }, 3000);
-            });
-        }
-
-        // 通过fetch获取当前目录
-        async function fetchCurrentDirectory() {
+        // 尝试通过GitHub API获取文件
+        async function tryGitHubAPI() {
             try {
-                const response = await fetch(window.location.pathname);
-                const text = await response.text();
-                
-                // 解析HTML查找文件链接
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const links = Array.from(doc.querySelectorAll('a'));
-                
-                return links
-                    .map(link => link.getAttribute('href'))
-                    .filter(href => href && !href.startsWith('?') && !href.startsWith('#'))
-                    .map(href => href.split('/').pop())
-                    .filter((value, index, self) => self.indexOf(value) === index);
+                // 使用GitHub API获取仓库内容
+                const response = await fetch('https://api.github.com/repos/yunyufeng/yunyufeng.github.io/contents/', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'Tool-Navigator'
+                    }
+                });
+
+                if (response.ok) {
+                    const files = await response.json();
                     
+                    // 过滤出HTML文件并排除index.html
+                    const htmlFiles = files.filter(file => 
+                        file.name.endsWith('.html') && 
+                        file.name !== 'index.html'
+                    );
+
+                    allTools = htmlFiles.map(file => ({
+                        name: file.name.replace('.html', ''),
+                        description: generateDescription(file.name),
+                        icon: getToolIcon(file.name),
+                        url: file.name,
+                        category: getCategory(file.name),
+                        features: getFeatures(file.name),
+                        status: getStatus(file.name),
+                        size: file.size ? formatFileSize(file.size) : '自动获取',
+                        lastModified: 'GitHub获取',
+                        fileSize: file.size || 0,
+                        featured: file.name.includes('PDF转JPG')
+                    }));
+
+                    if (allTools.length > 0) {
+                        showStatus(`成功获取 ${allTools.length} 个工具`, 'success');
+                        displayTools(allTools);
+                        updateStats(allTools);
+                    } else {
+                        throw new Error('没有找到HTML工具文件');
+                    }
+                } else {
+                    throw new Error(`GitHub API错误: ${response.status}`);
+                }
             } catch (error) {
-                console.warn('fetch方法失败:', error);
-                return [];
+                throw error;
             }
         }
 
-        // 获取文件信息
-        async function getFileInfo(filename) {
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open('HEAD', filename, true);
-                
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        const size = parseInt(xhr.getResponseHeader('Content-Length')) || 0;
-                        const lastModified = xhr.getResponseHeader('Last-Modified');
-                        
-                        resolve({
-                            size: size,
-                            lastModified: lastModified ? formatDate(new Date(lastModified)) : '未知',
-                            isIndexFile: filename.toLowerCase() === 'index.html'
-                        });
-                    } else {
-                        reject(new Error(`HTTP ${xhr.status}`));
-                    }
-                };
-                
-                xhr.onerror = function() {
-                    // 如果HEAD请求失败，尝试GET请求获取大小
-                    const xhr2 = new XMLHttpRequest();
-                    xhr2.open('GET', filename, true);
-                    
-                    xhr2.onload = function() {
-                        resolve({
-                            size: xhr2.responseText.length,
-                            lastModified: '未知',
-                            isIndexFile: filename.toLowerCase() === 'index.html'
-                        });
-                    };
-                    
-                    xhr2.onerror = function() {
-                        reject(new Error('无法获取文件信息'));
-                    };
-                    
-                    xhr2.send();
-                };
-                
-                xhr.send();
-            });
+        // 使用静态文件数据
+        function useStaticFiles() {
+            allTools = toolsData;
+            displayTools(allTools);
+            updateStats(allTools);
+            showStatus('使用本地工具数据', 'info');
         }
 
-        // 显示文件列表
-        function displayFiles(files) {
-            const fileGrid = document.getElementById('fileGrid');
+        // 显示工具列表
+        function displayTools(toolsList) {
+            const toolsGrid = document.getElementById('toolsGrid');
             
-            fileGrid.innerHTML = files.map(file => `
-                <div class="file-card">
-                    <div class="file-icon">
-                        ${file.isIndexFile ? '🏠' : '📄'}
+            if (!toolsList || toolsList.length === 0) {
+                toolsGrid.innerHTML = `
+                    <div class="no-tools">
+                        <div class="no-tools-icon">📁</div>
+                        <h3>未找到HTML文件</h3>
+                        <p>当前目录下没有找到任何HTML文件</p>
+                        <div style="margin-top: 20px;">
+                            <p style="color: #999; font-size: 0.9rem;">
+                                检测到的文件: index.html, PDF转JPG转换器.html, README.md
+                            </p>
+                        </div>
                     </div>
-                    <div class="file-info">
-                        <div class="file-name">
-                            <a href="${file.name}" target="_blank" title="点击在新标签页打开">
-                                ${file.name}
-                            </a>
+                `;
+                return;
+            }
+
+            toolsGrid.innerHTML = toolsList.map(tool => `
+                <div class="tool-card ${tool.featured ? 'featured' : ''}">
+                    <div class="tool-icon">${tool.icon}</div>
+                    <div class="tool-info">
+                        <div class="tool-name">
+                            <a href="${tool.url}" target="_blank">${tool.name}</a>
+                            ${tool.status ? `<span class="tool-status status-${tool.status}">${
+                                tool.status === 'new' ? '新' : 
+                                tool.status === 'popular' ? '热门' : 
+                                '测试'
+                            }</span>` : ''}
                         </div>
-                        <div class="file-details">
-                            <div class="file-detail" title="文件大小">
-                                📦 ${formatFileSize(file.size)}
-                            </div>
-                            <div class="file-detail" title="最后修改时间">
-                                🕐 ${file.lastModified}
-                            </div>
+                        <div class="tool-description">${tool.description}</div>
+                        <div class="tool-features">
+                            ${tool.features.map(feature => `
+                                <span class="feature-tag">${feature}</span>
+                            `).join('')}
+                            <span class="feature-tag">${tool.size}</span>
                         </div>
-                        <div class="file-actions">
-                            <a href="${file.name}" target="_blank" class="action-btn view-btn">
-                                在新窗口打开
+                        <div class="tool-actions">
+                            <a href="${tool.url}" target="_blank" class="btn btn-primary">
+                                <span>🚀</span> 立即使用
                             </a>
-                            <a href="${file.name}" class="action-btn preview-btn">
-                                在当前窗口打开
+                            <a href="${tool.url}" class="btn btn-secondary">
+                                <span>👀</span> 预览功能
                             </a>
                         </div>
                     </div>
@@ -779,155 +724,151 @@
             `).join('');
         }
 
-        // 搜索文件
-        function searchFiles() {
+        // 生成工具描述
+        function generateDescription(filename) {
+            const name = filename.toLowerCase();
+            if (name.includes('pdf') && name.includes('jpg')) {
+                return '专业的PDF转JPG图片转换工具，支持高分辨率输出和批量处理';
+            } else if (name.includes('pdf')) {
+                return 'PDF文档处理工具，提供多种PDF相关功能';
+            } else {
+                return '实用的在线工具，点击即可使用';
+            }
+        }
+
+        // 获取工具图标
+        function getToolIcon(filename) {
+            const name = filename.toLowerCase();
+            if (name.includes('pdf') && name.includes('jpg')) {
+                return '📄➡️🖼️';
+            } else if (name.includes('pdf')) {
+                return '📄';
+            } else if (name.includes('image')) {
+                return '🖼️';
+            } else {
+                return '🛠️';
+            }
+        }
+
+        // 获取工具分类
+        function getCategory(filename) {
+            const name = filename.toLowerCase();
+            if (name.includes('pdf')) return 'pdf';
+            if (name.includes('image')) return 'image';
+            return 'other';
+        }
+
+        // 获取工具特性
+        function getFeatures(filename) {
+            const name = filename.toLowerCase();
+            const features = [];
+            if (name.includes('pdf')) features.push('PDF处理');
+            if (name.includes('jpg') || name.includes('image')) features.push('图片转换');
+            if (name.includes('转换')) features.push('格式转换');
+            if (features.length === 0) features.push('在线工具');
+            return features;
+        }
+
+        // 获取工具状态
+        function getStatus(filename) {
+            const name = filename.toLowerCase();
+            if (name.includes('pdf') && name.includes('jpg')) return 'popular';
+            return null;
+        }
+
+        // 搜索工具
+        function searchTools() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            currentSearch = searchTerm;
             
             if (!searchTerm) {
-                filterFiles(currentFilter);
+                filterTools(currentFilter);
                 return;
             }
             
-            const filteredFiles = allFiles.filter(file => 
-                file.name.toLowerCase().includes(searchTerm)
+            const filteredTools = allTools.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) ||
+                tool.description.toLowerCase().includes(searchTerm) ||
+                tool.features.some(feature => feature.toLowerCase().includes(searchTerm))
             );
             
-            if (filteredFiles.length > 0) {
-                displayFiles(filteredFiles);
-                document.getElementById('noFilesMessage').style.display = 'none';
-            } else {
-                document.getElementById('fileGrid').innerHTML = '';
-                document.getElementById('noFilesMessage').style.display = 'block';
-                document.getElementById('noFilesMessage').innerHTML = `
-                    <div class="no-files-icon">🔍</div>
-                    <h3>未找到匹配的文件</h3>
-                    <p>没有找到包含"${searchTerm}"的HTML文件</p>
-                `;
-            }
-            
-            // 更新统计
-            updateStats();
+            displayTools(filteredTools);
         }
 
-        // 过滤文件
-        function filterFiles(type) {
-            currentFilter = type;
+        // 过滤工具
+        function filterTools(filter) {
+            currentFilter = filter;
             
             // 更新按钮状态
-            document.querySelectorAll('.filter-btn').forEach(btn => {
+            document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
             
-            let filteredFiles = [...allFiles];
+            let filteredTools = [...allTools];
             
-            switch(type) {
+            switch(filter) {
                 case 'recent':
-                    // 按文件名排序（简单实现）
-                    filteredFiles.sort((a, b) => b.name.localeCompare(a.name));
+                    // 按修改时间排序（这里简单按名称排序）
+                    filteredTools.sort((a, b) => b.name.localeCompare(a.name));
                     break;
-                    
                 case 'large':
-                    // 按文件大小降序
-                    filteredFiles.sort((a, b) => b.size - a.size);
+                    // 按文件大小排序
+                    filteredTools.sort((a, b) => (b.fileSize || 0) - (a.fileSize || 0));
                     break;
-                    
                 default:
-                    // 默认按字母顺序排序
-                    filteredFiles.sort((a, b) => a.name.localeCompare(b.name));
+                    // 默认按名称排序
+                    filteredTools.sort((a, b) => a.name.localeCompare(b.name));
             }
             
-            if (filteredFiles.length > 0) {
-                displayFiles(filteredFiles);
-                document.getElementById('noFilesMessage').style.display = 'none';
-            } else {
-                document.getElementById('fileGrid').innerHTML = '';
-                document.getElementById('noFilesMessage').style.display = 'block';
-            }
+            displayTools(filteredTools);
         }
 
         // 更新统计信息
-        function updateStats() {
-            const totalFiles = allFiles.length;
-            const htmlFiles = allFiles.length; // 当前只显示HTML文件
-            const totalSize = allFiles.reduce((sum, file) => sum + file.size, 0);
-            const largestFile = allFiles.length > 0 
-                ? Math.max(...allFiles.map(f => f.size)) 
-                : 0;
-            const indexFiles = allFiles.filter(f => f.isIndexFile).length;
-            
-            // 更新头部统计
-            document.getElementById('totalFiles').textContent = totalFiles;
-            document.getElementById('htmlFiles').textContent = htmlFiles;
+        function updateStats(tools) {
+            document.getElementById('totalTools').textContent = tools.length;
+            document.getElementById('htmlFiles').textContent = tools.length;
             document.getElementById('lastUpdate').textContent = '刚刚';
             
-            // 更新详细统计
-            const statsGrid = document.getElementById('statsGrid');
-            statsGrid.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-card-value">${totalFiles}</div>
-                    <div class="stat-card-label">HTML文件总数</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-value">${indexFiles}</div>
-                    <div class="stat-card-label">主页文件</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-value">${formatFileSize(totalSize)}</div>
-                    <div class="stat-card-label">总文件大小</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-value">${formatFileSize(largestFile)}</div>
-                    <div class="stat-card-label">最大文件</div>
-                </div>
-            `;
+            document.getElementById('repoFiles').textContent = '3'; // 总文件数
+            document.getElementById('repoHtmlFiles').textContent = tools.length;
+        }
+
+        // 显示状态消息
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
         }
 
         // 格式化文件大小
         function formatFileSize(bytes) {
-            if (bytes === 0) return '0 B';
+            if (!bytes) return '未知';
             const k = 1024;
             const sizes = ['B', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
         }
 
-        // 格式化日期
-        function formatDate(date) {
-            if (!(date instanceof Date) || isNaN(date)) return '未知';
-            
-            const now = new Date();
-            const diff = now - date;
-            const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                return '今天';
-            } else if (diffDays === 1) {
-                return '昨天';
-            } else if (diffDays < 7) {
-                return `${diffDays}天前`;
-            } else if (diffDays < 30) {
-                return `${Math.floor(diffDays / 7)}周前`;
-            } else {
-                return date.toLocaleDateString('zh-CN');
-            }
-        }
-
-        // 初始化示例：添加几个示例文件（仅用于演示）
-        if (allFiles.length === 0) {
-            setTimeout(() => {
-                allFiles = [
-                    { name: 'index.html', size: 1024, lastModified: '今天', isIndexFile: true },
-                    { name: 'about.html', size: 2048, lastModified: '昨天', isIndexFile: false },
-                    { name: 'contact.html', size: 1536, lastModified: '3天前', isIndexFile: false },
-                    { name: 'products.html', size: 3072, lastModified: '1周前', isIndexFile: false },
-                    { name: 'services.html', size: 2560, lastModified: '2天前', isIndexFile: false },
-                    { name: 'blog.html', size: 4096, lastModified: '今天', isIndexFile: false }
-                ];
-                updateStats();
-                displayFiles(allFiles);
-                document.getElementById('loadingIndicator').style.display = 'none';
-            }, 1000);
+        // 设置键盘快捷键
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+R 刷新
+                if (e.key === 'r' && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    loadGitHubFiles();
+                }
+                // / 聚焦搜索
+                if (e.key === '/') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
         }
     </script>
 </body>
