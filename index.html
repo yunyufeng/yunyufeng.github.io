@@ -3,421 +3,932 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>动态背景文字浪漫时刻</title>
+    <title>项目文件浏览器</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd);
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            animation: bgChange 15s infinite alternate;
+            box-sizing: border-box;
         }
-        
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
         .container {
-            position: relative;
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(0,0,0,0.3);
-            background: rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite, colorShift 8s infinite alternate, textGlow 3s infinite alternate;
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
         }
-        
-        p {
-            font-size: 1.5rem;
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
             max-width: 600px;
+            margin: 0 auto 20px;
             line-height: 1.6;
-            animation: floatText 10s infinite ease-in-out, textWave 15s infinite linear;
         }
-        
-        .heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff6b81;
-            transform: rotate(45deg);
-            animation: float 8s linear infinite, rotate 4s infinite linear;
+
+        .stats {
+            display: inline-flex;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
-        .heart::before,
-        .heart::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: inherit;
-            border-radius: 50%;
+
+        .stat-item {
+            text-align: center;
         }
-        
-        .heart::before {
-            top: -10px;
-            left: 0;
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
         }
-        
-        .heart::after {
-            top: 0;
-            left: -10px;
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
-        
-        .star {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite alternate;
+
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-top: 20px;
         }
-        
-        .bubble {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            animation: floatBubble 12s linear infinite;
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
         }
-        
-        /* 关键帧动画 */
-        @keyframes float {
-            0% {
-                top: -10%;
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                top: 110%;
-                opacity: 0;
-            }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
         }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        @keyframes rotate {
-            0% {
-                transform: rotate(45deg);
-            }
-            100% {
-                transform: rotate(405deg);
-            }
-        }
-        
-        @keyframes colorShift {
-            0% {
-                color: #ffffff;
-            }
-            25% {
-                color: #ffcccc;
-            }
-            50% {
-                color: #ffb8c6;
-            }
-            75% {
-                color: #ff9ebb;
-            }
-            100% {
-                color: #ff85b3;
-            }
-        }
-        
-        /* 增强背景动画 */
-        @keyframes bgChange {
-            0% {
-                background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a1c4fd);
-            }
-            10% {
-                background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #ffecd2);
-            }
-            20% {
-                background: linear-gradient(135deg, #ffecd2, #fcb69f, #ff9a9e);
-            }
-            30% {
-                background: linear-gradient(135deg, #d4fc79, #96e6a1, #d4fc79);
-            }
-            40% {
-                background: linear-gradient(135deg, #fbc2eb, #a6c1ee, #fbc2eb);
-            }
-            50% {
-                background: linear-gradient(135deg, #84fab0, #8fd3f4, #84fab0);
-            }
-            60% {
-                background: linear-gradient(135deg, #a6c0fe, #f68084, #a6c0fe);
-            }
-            70% {
-                background: linear-gradient(135deg, #fccb90, #d57eeb, #fccb90);
-            }
-            80% {
-                background: linear-gradient(135deg, #4facfe, #00f2fe, #4facfe);
-            }
-            90% {
-                background: linear-gradient(135deg, #f093fb, #f5576c, #f093fb);
-            }
-            100% {
-                background: linear-gradient(135deg, #5ee7df, #b490ca, #5ee7df);
-            }
-        }
-        
-        @keyframes floatText {
-            0% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-15px);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes twinkle {
-            0% {
-                opacity: 0.2;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
-        }
-        
-        @keyframes floatBubble {
-            0% {
-                bottom: -10%;
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                bottom: 110%;
-                opacity: 0;
-                transform: scale(1.5);
-            }
-        }
-        
-        /* 新增文字动画效果 */
-        @keyframes textGlow {
-            0% {
-                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            }
-            100% {
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 
-                             0 0 30px rgba(255, 255, 255, 0.6),
-                             0 0 40px rgba(255, 255, 255, 0.4);
-            }
-        }
-        
-        @keyframes textWave {
-            0% {
-                transform: skewX(0deg);
-            }
-            25% {
-                transform: skewX(2deg);
-            }
-            50% {
-                transform: skewX(0deg);
-            }
-            75% {
-                transform: skewX(-2deg);
-            }
-            100% {
-                transform: skewX(0deg);
-            }
-        }
-        
-        /* 新增背景图案动画 */
-        .bg-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .search-box input {
             width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.8) 0px, transparent 50px),
-                radial-gradient(circle at 90% 60%, rgba(255,255,255,0.6) 0px, transparent 60px),
-                radial-gradient(circle at 30% 80%, rgba(255,255,255,0.7) 0px, transparent 70px);
-            animation: patternMove 30s infinite linear;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
-        
-        @keyframes patternMove {
-            0% {
-                background-position: 0% 0%, 0% 0%, 0% 0%;
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .file-icon {
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .file-info {
+            padding: 20px;
+        }
+
+        .file-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .file-name a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .file-name a:hover {
+            color: #667eea;
+        }
+
+        .file-details {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .file-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 15px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .preview-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .preview-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .no-files {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-files-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .quick-stats {
+            margin-top: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .directory-tree {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .directory-tree.show {
+            display: block;
+        }
+
+        .tree-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tree-item {
+            padding: 8px 0 8px 20px;
+            position: relative;
+        }
+
+        .tree-item::before {
+            content: "📄";
+            position: absolute;
+            left: 0;
+        }
+
+        .tree-item.folder::before {
+            content: "📁";
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
             }
-            100% {
-                background-position: 100% 100%, 200% 200%, 300% 300%;
+            
+            header {
+                padding: 20px 10px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: none;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-pattern"></div>
-    
     <div class="container">
-        <h1>✨ 浪漫时刻 ✨</h1>
-        <p>在这特别的时刻，让爱如花瓣般飘落，填满整个世界</p>
+        <header>
+            <h1>📁 项目文件浏览器</h1>
+            <p>自动检测并展示当前目录下的所有HTML文件，点击即可快速访问</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalFiles">0</div>
+                    <div class="stat-label">总文件数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="htmlFiles">0</div>
+                    <div class="stat-label">HTML文件</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="lastUpdate">刚刚</div>
+                    <div class="stat-label">最后更新</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="controls">
+                <div class="search-box">
+                    <div class="search-icon">🔍</div>
+                    <input type="text" id="searchInput" placeholder="搜索HTML文件..." oninput="searchFiles()">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterFiles('all')">全部文件</button>
+                    <button class="filter-btn" onclick="filterFiles('recent')">最近修改</button>
+                    <button class="filter-btn" onclick="filterFiles('large')">文件较大</button>
+                </div>
+                <button class="refresh-btn" onclick="loadFiles()">
+                    <span>🔄</span> 刷新列表
+                </button>
+            </div>
+
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>正在扫描目录中的文件...</p>
+            </div>
+
+            <div class="file-grid" id="fileGrid"></div>
+
+            <div class="no-files" id="noFilesMessage" style="display: none;">
+                <div class="no-files-icon">📁</div>
+                <h3>未找到HTML文件</h3>
+                <p>当前目录下没有找到任何HTML文件</p>
+            </div>
+
+            <div class="quick-stats">
+                <h3>📊 目录统计</h3>
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+
+            <div class="directory-tree" id="directoryTree">
+                <div class="tree-title">🌳 目录结构</div>
+                <div id="treeContent"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2024 项目文件浏览器 | 自动检测本地HTML文件</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">当前路径: <span id="currentPath">正在获取...</span></p>
+        </footer>
     </div>
-    
+
     <script>
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
+        // 全局变量
+        let allFiles = [];
+        let currentFilter = 'all';
+
+        // 页面加载时自动扫描文件
+        document.addEventListener('DOMContentLoaded', function() {
+            // 显示当前路径
+            try {
+                const currentPath = window.location.pathname;
+                const pathParts = currentPath.split('/').filter(p => p);
+                const displayPath = pathParts.length > 0 
+                    ? '/' + pathParts.slice(0, -1).join('/') + '/' 
+                    : '/';
+                document.getElementById('currentPath').textContent = displayPath;
+            } catch (e) {
+                document.getElementById('currentPath').textContent = window.location.pathname;
+            }
             
-            const left = Math.random() * 100;
-            heart.style.left = `${left}vw`;
+            // 加载文件列表
+            loadFiles();
             
-            const size = Math.random() * 20 + 10;
-            heart.style.width = `${size}px`;
-            heart.style.height = `${size}px`;
+            // 添加键盘快捷键
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'r') {
+                    e.preventDefault();
+                    loadFiles();
+                }
+                if (e.key === 'Escape') {
+                    document.getElementById('searchInput').value = '';
+                    searchFiles();
+                }
+            });
+        });
+
+        // 加载文件列表
+        async function loadFiles() {
+            const fileGrid = document.getElementById('fileGrid');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const noFilesMessage = document.getElementById('noFilesMessage');
             
-            const colors = ['#ff6b81', '#ff4757', '#ff7979', '#ffcccc', '#ff9ebb'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            heart.style.backgroundColor = color;
+            // 显示加载动画
+            fileGrid.innerHTML = '';
+            loadingIndicator.style.display = 'block';
+            noFilesMessage.style.display = 'none';
             
-            const duration = Math.random() * 6 + 4;
-            heart.style.animationDuration = `${duration}s`;
-            
-            const delay = Math.random() * 5;
-            heart.style.animationDelay = `${delay}s`;
-            
-            document.body.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.remove();
-            }, duration * 1000 + 1000);
-        }
-        
-        function createStar() {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            
-            const left = Math.random() * 100;
-            const top = Math.random() * 100;
-            star.style.left = `${left}vw`;
-            star.style.top = `${top}vh`;
-            
-            const size = Math.random() * 3 + 1;
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            
-            const duration = Math.random() * 4 + 2;
-            star.style.animationDuration = `${duration}s`;
-            
-            const delay = Math.random() * 3;
-            star.style.animationDelay = `${delay}s`;
-            
-            document.body.appendChild(star);
-            
-            setTimeout(() => {
-                star.remove();
-            }, duration * 1000 + 1000);
-        }
-        
-        function createBubble() {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            
-            const left = Math.random() * 100;
-            bubble.style.left = `${left}vw`;
-            
-            const colors = ['rgba(255, 255, 255, 0.7)', 'rgba(173, 216, 230, 0.7)', 'rgba(240, 248, 255, 0.7)'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            bubble.style.borderColor = color;
-            
-            const duration = Math.random() * 8 + 6;
-            bubble.style.animationDuration = `${duration}s`;
-            
-            const delay = Math.random() * 4;
-            bubble.style.animationDelay = `${delay}s`;
-            
-            document.body.appendChild(bubble);
-            
-            setTimeout(() => {
-                bubble.remove();
-            }, duration * 1000 + 1000);
-        }
-        
-        // 动态改变文字内容
-        function changeText() {
-            const texts = [
-                "爱是生命中最美的诗篇",
-                "你是我心中永恒的星辰",
-                "每一刻与你都是永恒",
-                "在爱的世界里，时间静止",
-                "你的微笑是我每天的阳光",
-                "两颗心相遇，便是永恒的开始"
-            ];
-            
-            const h1 = document.querySelector('h1');
-            const p = document.querySelector('p');
-            
-            const randomIndex = Math.floor(Math.random() * texts.length);
-            const newText = texts[randomIndex];
-            
-            // 淡出效果
-            h1.style.opacity = 0;
-            p.style.opacity = 0;
-            
-            setTimeout(() => {
-                p.textContent = newText;
+            try {
+                // 获取当前目录下的所有HTML文件
+                const htmlFiles = await scanForHtmlFiles();
                 
-                // 淡入效果
-                h1.style.opacity = 1;
-                p.style.opacity = 1;
+                // 获取文件详细信息
+                allFiles = await Promise.all(
+                    htmlFiles.map(async (filename, index) => {
+                        try {
+                            const fileInfo = await getFileInfo(filename);
+                            return {
+                                name: filename,
+                                ...fileInfo
+                            };
+                        } catch (error) {
+                            console.warn(`获取文件信息失败: ${filename}`, error);
+                            return {
+                                name: filename,
+                                size: 0,
+                                lastModified: '未知',
+                                isIndexFile: filename.toLowerCase() === 'index.html'
+                            };
+                        }
+                    })
+                );
+                
+                // 更新统计信息
+                updateStats();
+                
+                // 隐藏加载动画
+                loadingIndicator.style.display = 'none';
+                
+                // 显示文件列表
+                if (allFiles.length > 0) {
+                    displayFiles(allFiles);
+                } else {
+                    noFilesMessage.style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('加载文件列表失败:', error);
+                loadingIndicator.style.display = 'none';
+                noFilesMessage.style.display = 'block';
+                noFilesMessage.innerHTML = `
+                    <div class="no-files-icon">❌</div>
+                    <h3>加载失败</h3>
+                    <p>${error.message}</p>
+                    <button class="refresh-btn" onclick="loadFiles()" style="margin-top: 20px;">
+                        <span>🔄</span> 重试
+                    </button>
+                `;
+            }
+        }
+
+        // 扫描HTML文件
+        async function scanForHtmlFiles() {
+            return new Promise((resolve, reject) => {
+                // 创建一个隐藏的iframe来遍历目录
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = window.location.pathname;
+                
+                iframe.onload = function() {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const links = Array.from(iframeDoc.links || []);
+                        
+                        // 收集所有HTML文件
+                        const htmlFiles = [];
+                        const seen = new Set();
+                        
+                        // 从链接中提取HTML文件
+                        links.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href && href.toLowerCase().endsWith('.html')) {
+                                const filename = href.split('/').pop();
+                                if (filename && !seen.has(filename) && !filename.includes('?')) {
+                                    seen.add(filename);
+                                    htmlFiles.push(filename);
+                                }
+                            }
+                        });
+                        
+                        // 从当前页面的script和link标签中查找
+                        const scripts = Array.from(document.scripts || []);
+                        scripts.forEach(script => {
+                            const src = script.getAttribute('src');
+                            if (src && src.toLowerCase().endsWith('.html')) {
+                                const filename = src.split('/').pop();
+                                if (filename && !seen.has(filename)) {
+                                    seen.add(filename);
+                                    htmlFiles.push(filename);
+                                }
+                            }
+                        });
+                        
+                        // 尝试通过fetch获取目录列表
+                        fetchCurrentDirectory().then(serverFiles => {
+                            serverFiles.forEach(filename => {
+                                if (filename.toLowerCase().endsWith('.html') && !seen.has(filename)) {
+                                    seen.add(filename);
+                                    htmlFiles.push(filename);
+                                }
+                            });
+                            resolve(htmlFiles.sort());
+                        }).catch(() => {
+                            resolve(htmlFiles.sort());
+                        });
+                        
+                    } catch (error) {
+                        console.warn('iframe扫描失败，尝试其他方法:', error);
+                        // 回退方案：通过AJAX尝试获取文件
+                        fetchCurrentDirectory().then(files => {
+                            const htmlFiles = files.filter(f => 
+                                f.toLowerCase().endsWith('.html')
+                            ).sort();
+                            resolve(htmlFiles);
+                        }).catch(err => {
+                            reject(new Error('无法扫描目录，请确保服务器配置允许目录浏览'));
+                        });
+                    }
+                };
+                
+                iframe.onerror = function() {
+                    // iframe失败，尝试fetch方法
+                    fetchCurrentDirectory().then(files => {
+                        const htmlFiles = files.filter(f => 
+                            f.toLowerCase().endsWith('.html')
+                        ).sort();
+                        resolve(htmlFiles);
+                    }).catch(err => {
+                        reject(new Error('无法扫描目录文件'));
+                    });
+                };
+                
+                document.body.appendChild(iframe);
+                
+                // 3秒后超时
+                setTimeout(() => {
+                    if (!iframe.contentWindow) {
+                        document.body.removeChild(iframe);
+                        reject(new Error('扫描超时'));
+                    }
+                }, 3000);
+            });
+        }
+
+        // 通过fetch获取当前目录
+        async function fetchCurrentDirectory() {
+            try {
+                const response = await fetch(window.location.pathname);
+                const text = await response.text();
+                
+                // 解析HTML查找文件链接
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const links = Array.from(doc.querySelectorAll('a'));
+                
+                return links
+                    .map(link => link.getAttribute('href'))
+                    .filter(href => href && !href.startsWith('?') && !href.startsWith('#'))
+                    .map(href => href.split('/').pop())
+                    .filter((value, index, self) => self.indexOf(value) === index);
+                    
+            } catch (error) {
+                console.warn('fetch方法失败:', error);
+                return [];
+            }
+        }
+
+        // 获取文件信息
+        async function getFileInfo(filename) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('HEAD', filename, true);
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const size = parseInt(xhr.getResponseHeader('Content-Length')) || 0;
+                        const lastModified = xhr.getResponseHeader('Last-Modified');
+                        
+                        resolve({
+                            size: size,
+                            lastModified: lastModified ? formatDate(new Date(lastModified)) : '未知',
+                            isIndexFile: filename.toLowerCase() === 'index.html'
+                        });
+                    } else {
+                        reject(new Error(`HTTP ${xhr.status}`));
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    // 如果HEAD请求失败，尝试GET请求获取大小
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open('GET', filename, true);
+                    
+                    xhr2.onload = function() {
+                        resolve({
+                            size: xhr2.responseText.length,
+                            lastModified: '未知',
+                            isIndexFile: filename.toLowerCase() === 'index.html'
+                        });
+                    };
+                    
+                    xhr2.onerror = function() {
+                        reject(new Error('无法获取文件信息'));
+                    };
+                    
+                    xhr2.send();
+                };
+                
+                xhr.send();
+            });
+        }
+
+        // 显示文件列表
+        function displayFiles(files) {
+            const fileGrid = document.getElementById('fileGrid');
+            
+            fileGrid.innerHTML = files.map(file => `
+                <div class="file-card">
+                    <div class="file-icon">
+                        ${file.isIndexFile ? '🏠' : '📄'}
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">
+                            <a href="${file.name}" target="_blank" title="点击在新标签页打开">
+                                ${file.name}
+                            </a>
+                        </div>
+                        <div class="file-details">
+                            <div class="file-detail" title="文件大小">
+                                📦 ${formatFileSize(file.size)}
+                            </div>
+                            <div class="file-detail" title="最后修改时间">
+                                🕐 ${file.lastModified}
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="${file.name}" target="_blank" class="action-btn view-btn">
+                                在新窗口打开
+                            </a>
+                            <a href="${file.name}" class="action-btn preview-btn">
+                                在当前窗口打开
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 搜索文件
+        function searchFiles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                filterFiles(currentFilter);
+                return;
+            }
+            
+            const filteredFiles = allFiles.filter(file => 
+                file.name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredFiles.length > 0) {
+                displayFiles(filteredFiles);
+                document.getElementById('noFilesMessage').style.display = 'none';
+            } else {
+                document.getElementById('fileGrid').innerHTML = '';
+                document.getElementById('noFilesMessage').style.display = 'block';
+                document.getElementById('noFilesMessage').innerHTML = `
+                    <div class="no-files-icon">🔍</div>
+                    <h3>未找到匹配的文件</h3>
+                    <p>没有找到包含"${searchTerm}"的HTML文件</p>
+                `;
+            }
+            
+            // 更新统计
+            updateStats();
+        }
+
+        // 过滤文件
+        function filterFiles(type) {
+            currentFilter = type;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            let filteredFiles = [...allFiles];
+            
+            switch(type) {
+                case 'recent':
+                    // 按文件名排序（简单实现）
+                    filteredFiles.sort((a, b) => b.name.localeCompare(a.name));
+                    break;
+                    
+                case 'large':
+                    // 按文件大小降序
+                    filteredFiles.sort((a, b) => b.size - a.size);
+                    break;
+                    
+                default:
+                    // 默认按字母顺序排序
+                    filteredFiles.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            
+            if (filteredFiles.length > 0) {
+                displayFiles(filteredFiles);
+                document.getElementById('noFilesMessage').style.display = 'none';
+            } else {
+                document.getElementById('fileGrid').innerHTML = '';
+                document.getElementById('noFilesMessage').style.display = 'block';
+            }
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            const totalFiles = allFiles.length;
+            const htmlFiles = allFiles.length; // 当前只显示HTML文件
+            const totalSize = allFiles.reduce((sum, file) => sum + file.size, 0);
+            const largestFile = allFiles.length > 0 
+                ? Math.max(...allFiles.map(f => f.size)) 
+                : 0;
+            const indexFiles = allFiles.filter(f => f.isIndexFile).length;
+            
+            // 更新头部统计
+            document.getElementById('totalFiles').textContent = totalFiles;
+            document.getElementById('htmlFiles').textContent = htmlFiles;
+            document.getElementById('lastUpdate').textContent = '刚刚';
+            
+            // 更新详细统计
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-card-value">${totalFiles}</div>
+                    <div class="stat-card-label">HTML文件总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${indexFiles}</div>
+                    <div class="stat-card-label">主页文件</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${formatFileSize(totalSize)}</div>
+                    <div class="stat-card-label">总文件大小</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value">${formatFileSize(largestFile)}</div>
+                    <div class="stat-card-label">最大文件</div>
+                </div>
+            `;
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // 格式化日期
+        function formatDate(date) {
+            if (!(date instanceof Date) || isNaN(date)) return '未知';
+            
+            const now = new Date();
+            const diff = now - date;
+            const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return '今天';
+            } else if (diffDays === 1) {
+                return '昨天';
+            } else if (diffDays < 7) {
+                return `${diffDays}天前`;
+            } else if (diffDays < 30) {
+                return `${Math.floor(diffDays / 7)}周前`;
+            } else {
+                return date.toLocaleDateString('zh-CN');
+            }
+        }
+
+        // 初始化示例：添加几个示例文件（仅用于演示）
+        if (allFiles.length === 0) {
+            setTimeout(() => {
+                allFiles = [
+                    { name: 'index.html', size: 1024, lastModified: '今天', isIndexFile: true },
+                    { name: 'about.html', size: 2048, lastModified: '昨天', isIndexFile: false },
+                    { name: 'contact.html', size: 1536, lastModified: '3天前', isIndexFile: false },
+                    { name: 'products.html', size: 3072, lastModified: '1周前', isIndexFile: false },
+                    { name: 'services.html', size: 2560, lastModified: '2天前', isIndexFile: false },
+                    { name: 'blog.html', size: 4096, lastModified: '今天', isIndexFile: false }
+                ];
+                updateStats();
+                displayFiles(allFiles);
+                document.getElementById('loadingIndicator').style.display = 'none';
             }, 1000);
         }
-        
-        // 初始创建元素
-        for (let i = 0; i < 20; i++) {
-            createHeart();
-        }
-        
-        for (let i = 0; i < 30; i++) {
-            createStar();
-        }
-        
-        for (let i = 0; i < 15; i++) {
-            createBubble();
-        }
-        
-        // 定时创建新元素
-        setInterval(createHeart, 500);
-        setInterval(createStar, 800);
-        setInterval(createBubble, 1000);
-        
-        // 定时改变文字内容
-        setInterval(changeText, 8000);
     </script>
 </body>
 </html>
