@@ -1,0 +1,20 @@
+{
+  "PDF转JPG转换器.html": {
+    "name": "PDF转JPG专业转换器",
+    "description": "高质量PDF转JPG工具，支持300DPI，批量处理，智能优化",
+    "icon": "📄✨🖼️",
+    "category": "converter",
+    "features": ["PDF转JPG", "300DPI", "批量处理", "智能优化"],
+    "status": "popular",
+    "featured": true
+  },
+  "扫雷小游戏.html": {
+    "name": "经典扫雷游戏",
+    "description": "经典扫雷游戏，挑战你的逻辑推理能力",
+    "icon": "💣🎮",
+    "category": "game",
+    "features": ["扫雷", "经典游戏", "多种难度", "智能提示"],
+    "status": "popular",
+    "featured": true
+  }
+}
